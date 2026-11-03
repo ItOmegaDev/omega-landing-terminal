@@ -931,11 +931,29 @@ button {
 
   .ledger-row {
     grid-template-columns: 26px minmax(0, 1fr) auto;
-    gap: 10px;
+    gap: 4px 10px;
+  }
+
+  .ledger-index {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .ledger-main {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .ledger-term {
-    display: none;
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 11px;
+    color: var(--dim);
+  }
+
+  .ledger-price {
+    grid-column: 3;
+    grid-row: 1;
   }
 
   .contact-row {

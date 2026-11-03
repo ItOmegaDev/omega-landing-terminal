@@ -52,6 +52,8 @@ export interface Contact {
 }
 
 export interface Profile {
+  /** Content version of api/data/profile.json; drives the reseed. */
+  version?: string;
   brand: string;
   handle: string;
   title: Localized;
