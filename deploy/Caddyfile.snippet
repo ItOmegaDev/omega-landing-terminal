@@ -1,7 +1,8 @@
 # Додається в ~/apps/caddy/Caddyfile на сервері 0mega (VPS).
+# Лендінг живе на 0mega.pp.ua; застосунок «Рахунки» — на r.0mega.pp.ua.
 # Після зміни: docker exec caddy caddy reload --config /etc/caddy/Caddyfile
 
-l.0mega.pp.ua {
+0mega.pp.ua {
 	encode zstd gzip
 
 	reverse_proxy landing:3000 {

@@ -1,4 +1,4 @@
-# Landing — l.0mega.pp.ua
+# Landing — 0mega.pp.ua
 
 Особиста візитка Omega (ItOmegaDev): MERN-застосунок, який одночасно є
 портфоліо і демонстрацією стеку.
@@ -65,6 +65,13 @@ ssh 0mega 'docker exec caddy caddy reload --config /etc/caddy/Caddyfile'
 
 Caddy-блок лежить у `deploy/Caddyfile.snippet` і вже доданий у
 `~/apps/caddy/Caddyfile` на сервері.
+
+Публічні адреси на VPS `0mega`:
+
+| Домен | Що віддає |
+|---|---|
+| `0mega.pp.ua` | цей лендінг (`landing:3000`) |
+| `r.0mega.pp.ua`, `omegasmp.pp.ua`, `k.ipit.ooo` | застосунок «Рахунки» (`rahunoktest:4000`) |
 
 ## Експлуатація
 
