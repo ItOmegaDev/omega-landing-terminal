@@ -2,11 +2,13 @@
 FROM node:22-alpine AS web
 
 WORKDIR /app
-COPY web/package.json web/package-lock.json ./
-RUN npm ci --no-audit --no-fund
+# Bundled content copy so the first paint is never empty.
+COPY api/data ./api/data
+COPY web/package.json web/package-lock.json ./web/
+RUN cd web && npm ci --no-audit --no-fund
 
-COPY web/ ./
-RUN npm run build
+COPY web/ ./web
+RUN cd web && npm run build
 
 # ---- stage 2: runtime image ----
 FROM node:22-alpine AS runtime
@@ -19,7 +21,7 @@ RUN npm ci --omit=dev --no-audit --no-fund && npm cache clean --force
 
 COPY api/src ./src
 COPY api/data ./data
-COPY --from=web /app/dist ./public
+COPY --from=web /app/web/dist ./public
 
 USER node
 EXPOSE 3000

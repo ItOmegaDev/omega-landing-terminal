@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-03-2",
+  "version": "2026-11-03-3",
   "brand": "Omega",
   "handle": "ItOmegaDev",
   "title": {
@@ -249,43 +249,6 @@
       ]
     },
     {
-      "id": "pedagogical",
-      "name": "Pedagogical Hub",
-      "category": {
-        "uk": "Освітня платформа",
-        "en": "Education platform"
-      },
-      "year": "2025",
-      "status": {
-        "uk": "MVP",
-        "en": "MVP"
-      },
-      "summary": {
-        "uk": "Хаб обміну навчальними матеріалами між викладачами, студентами та учнями.",
-        "en": "A hub for sharing learning material between teachers, students and pupils."
-      },
-      "highlights": [
-        {
-          "uk": "Вхід через Google, ролі: викладач, студент, учень.",
-          "en": "Google sign-in with teacher, student and pupil roles."
-        },
-        {
-          "uk": "Вбудований переглядач PDF, презентацій і фотогалерей без завантаження.",
-          "en": "Built-in viewer for PDFs, slide decks and photo galleries without downloads."
-        },
-        {
-          "uk": "Коментарі в реальному часі, збережене, пошук за рівнем освіти.",
-          "en": "Real-time comments, saved items, search by education level."
-        }
-      ],
-      "stack": [
-        "React 19",
-        "TypeScript",
-        "Firebase",
-        "Tailwind"
-      ]
-    },
-    {
       "id": "nytka",
       "name": "Нитка",
       "category": {
@@ -321,43 +284,6 @@
         "Express",
         "Firebase",
         "Recharts"
-      ]
-    },
-    {
-      "id": "jas",
-      "name": "JAS",
-      "category": {
-        "uk": "Автоматизація",
-        "en": "Automation"
-      },
-      "year": "2025",
-      "status": {
-        "uk": "Внутрішній",
-        "en": "Internal"
-      },
-      "summary": {
-        "uk": "Набір скриптів для збору, фільтрації та підготовки даних за розкладом.",
-        "en": "A set of scripts that collect, filter and prepare data on a schedule."
-      },
-      "highlights": [
-        {
-          "uk": "Парсинг і нормалізація даних із різних джерел.",
-          "en": "Scraping and normalising data from multiple sources."
-        },
-        {
-          "uk": "Фільтри, дедуплікація, звіти у зручному форматі.",
-          "en": "Filters, de-duplication and reports in a usable format."
-        },
-        {
-          "uk": "Запуск за розписом замість ручної роботи.",
-          "en": "Scheduled runs instead of manual routine."
-        }
-      ],
-      "stack": [
-        "Python",
-        "Node.js",
-        "Bash",
-        "Cron"
       ]
     }
   ],
