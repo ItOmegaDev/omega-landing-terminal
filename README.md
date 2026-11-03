@@ -1,89 +1,112 @@
-# Landing — 0mega.pp.ua
+# Omega — Landing
 
-Особиста візитка Omega (ItOmegaDev): MERN-застосунок, який одночасно є
-портфоліо і демонстрацією стеку.
+Personal site of **Omega (`ItOmegaDev`)** — Software Engineer, Full-Stack & Infrastructure.
+The current version is an interactive terminal; a simpler page is planned on the `simple` branch.
 
-## Стек
+**Live:** https://0mega.pp.ua
 
-| Шар | Технології |
-|---|---|
+---
+
+## What it is
+
+A terminal-style portfolio. Instead of pages and cards, the visitor gets a shell:
+
+```
+omega@0mega:~$ work
+selected projects — 6
+
+ 01  ControlPanel    SaaS / hosting panel       2026
+ 02  EdgeProxy       Networking / proxy         2026
+ 03  OmegaSMP        Game infrastructure        2025—2026
+ 04  DiscordAuth     Java plugins               2025—2026
+ 05  OmegaOS         Experiment                 2026
+ 06  Нитка           E-commerce                 2025
+```
+
+### Commands
+
+| Command | Description |
+| --- | --- |
+| `help` | list commands |
+| `work` | selected projects |
+| `open <n>` | project details by number |
+| `stack` | technologies |
+| `services` | services and pricing |
+| `about` | directions, adjacent areas, experience |
+| `contact` | links |
+| `whoami` | short identity |
+| `lang uk\|en` | switch language (or the `UA`/`EN` button) |
+| `clear` | clear the screen |
+
+Shell behaviour: `↑` / `↓` command history, `Tab` completion, `Esc` not needed anywhere,
+deep links (`#/work`, `#/open/2`, `#/services`) run the command on load, and every previous
+output block is re-rendered when the language changes.
+
+---
+
+## Stack
+
+| Layer | Technology |
+| --- | --- |
 | Frontend | React 19, TypeScript, Vite |
 | Backend | Node.js 22, Express 4, Mongoose 8 |
-| База | MongoDB 7 (контейнер, без публікації портів) |
-| Проксі | Caddy 2 (TLS Let's Encrypt, HSTS, CSP) |
-| Деплой | Docker Compose на Ubuntu 24.04 |
+| Database | MongoDB 7 (container, no published ports) |
+| Proxy | Caddy 2 (Let's Encrypt TLS, HSTS, CSP) |
+| Deploy | Docker Compose on Ubuntu 24.04 |
 
-## Як працює сайт
+Page weight: ~87 KB gzipped in 3 requests, zero external fonts, analytics or CDNs.
+Two runtime dependencies (`react`, `react-dom`).
 
-Це термінал, а не звичайна сторінка: навігація — командами.
+---
 
-| Команда | Що робить |
-|---|---|
-| `help` | список команд |
-| `work` | обрані проєкти |
-| `open <n>` | деталі проєкту за номером |
-| `stack` | технології |
-| `services` | послуги та ціни |
-| `about` | напрямки, суміжні області, досвід |
-| `contact` | контакти |
-| `whoami` | коротка ідентичність |
-| `lang uk\|en` | мова (або кнопка `UA`/`EN` у заголовку вікна) |
-| `clear` | очистити екран |
-
-Дрібниці, які роблять його схожим на справжній shell:
-
-- `↑` / `↓` — історія команд, `Tab` — автодоповнення.
-- Deep links: `#/work`, `#/open/2`, `#/services` виконують команду одразу.
-- Вивід минулих команд перемальовується при зміні мови.
-- `sudo` відповідає жартом, а не помилкою.
-
-## Як влаштовано
+## Architecture
 
 ```
 web/                     React SPA
-  src/App.tsx            термінал: команди, вивід, історія, deep links
-  src/styles.css         оформлення консолі
-  src/fallback.ts        імпорт api/data/profile.json у бандл
-  public/avatar.jpg       аватар локально, без зовнішніх запитів
+  src/App.tsx            terminal: commands, output, history, deep links
+  src/styles.css         console styling
+  src/fallback.ts        imports api/data/profile.json into the bundle
+  public/avatar.jpg      avatar (local file, no external requests)
 api/
-  src/server.js          Express: /api/profile, /api/health, роздача SPA
-  src/db.js              Mongoose-моделі, підключення, версійний сід
-  data/profile.json      джерело правди для контенту
-Dockerfile               multi-stage: build React → runtime Node
-docker-compose.yml       app + mongo, мережа web (для Caddy)
+  src/server.js          Express: /api/profile, /api/health, serves the SPA
+  src/db.js              Mongoose models, connection, versioned seeding
+  data/profile.json      single source of truth for content
+Dockerfile               multi-stage: build React → Node runtime
+docker-compose.yml       app + mongo, shares the `web` network with Caddy
+deploy/Caddyfile.snippet site block for the edge proxy
 ```
 
-Особливості:
+Notes:
 
-- Контент вбудовується у фронтенд-бандл при збірці (`import ... from
-  '../../api/data/profile.json'`), тому перший кадр завжди повний — без
-  «порожніх» станів і без спалаху.
-- `/api/profile` віддає документ із MongoDB і оновлює сторінку в фоні. Якщо база
-  недоступна — лишається вбудована копія, 500 назовні не вилітає.
-- **Версійний сід:** у `profile.json` є поле `version`. Якщо воно відрізняється
-  від збереженого в Mongo — документ перезаписується при старті. Змінив текст →
-  підняв `version` → задеплоїв.
-- Лічильник переглядів (`stats.visits`) інкрементується раз на IP за 6 годин,
-  мапа в пам'яті обмежена 5000 записами.
-- `/api/*` обмежено 90 запитами на хвилину з IP.
+- Content is bundled at build time (`import ... from '../../api/data/profile.json'`), so the
+  first paint is always complete — no empty states, no flash. `/api/profile` refreshes it at
+  runtime; MongoDB remains the source of truth.
+- If the database is unavailable the site keeps working from the bundled copy and never
+  returns a 500 to the visitor.
+- **Versioned seeding:** `profile.json` carries a `version`. When it differs from the stored
+  document, MongoDB is updated on boot. Bump the version after editing content.
 
-## Локальна розробка
+---
+
+## Local development
 
 ```bash
-# термінал 1 — API (без Mongo працює на файлі)
+# terminal 1 — API (works without MongoDB, reads the bundled file)
 cd api && npm install && PORT=3000 npm run dev
 
-# термінал 2 — фронтенд з проксі на /api
+# terminal 2 — frontend with /api proxied
 cd web && npm install && npm run dev   # http://127.0.0.1:5173
 ```
 
-Перевірка типів і збірка:
+Type check and production build:
 
 ```bash
 cd web && npm run build      # tsc --noEmit + vite build
 ```
 
-## Деплой
+---
+
+## Deployment
 
 ```bash
 rsync -az -e ssh --exclude node_modules --exclude dist --exclude .git \
@@ -93,18 +116,15 @@ ssh 0mega 'cd ~/apps/landing && docker compose up -d --build'
 ssh 0mega 'docker exec caddy caddy reload --config /etc/caddy/Caddyfile'
 ```
 
-Caddy-блок лежить у `deploy/Caddyfile.snippet` і вже доданий у
-`~/apps/caddy/Caddyfile` на сервері.
+Public hosts on that server:
 
-Публічні адреси на VPS `0mega`:
+| Host | Serves |
+| --- | --- |
+| `0mega.pp.ua` | this landing (`landing:3000`) |
+| `0mega.pp.ua/<token>` | compatibility route: old public invoice links → `rahunoktest:4000` |
+| `r.0mega.pp.ua`, `omegasmp.pp.ua`, `k.ipit.ooo` | the "Rahunok" application (`rahunoktest:4000`) |
 
-| Домен | Що віддає |
-|---|---|
-| `0mega.pp.ua` | цей лендінг (`landing:3000`) |
-| `0mega.pp.ua/<token>` | сумісність: старі публічні посилання на рахунки → `rahunoktest:4000` |
-| `r.0mega.pp.ua`, `omegasmp.pp.ua`, `k.ipit.ooo` | застосунок «Рахунки» (`rahunoktest:4000`) |
-
-## Експлуатація
+### Operations
 
 ```bash
 ssh 0mega 'docker compose -f ~/apps/landing/docker-compose.yml ps'
@@ -112,21 +132,32 @@ ssh 0mega 'docker logs landing --tail 50'
 ssh 0mega 'docker exec landing-db mongosh landing --quiet --eval "db.stats().ok"'
 ```
 
-Бекап бази:
+Backup:
 
 ```bash
 ssh 0mega 'docker exec landing-db mongodump --db landing --archive' > landing-$(date +%F).archive
 ```
 
-Оновлення контенту: правиш `api/data/profile.json`, піднімаєш `version`,
-`rsync` + `docker compose up -d --build`. Документ у Mongo перезапишеться
-автоматично (див. «Версійний сід» вище).
+---
 
-## Безпека
+## Security
 
-- Контейнер застосунку: non-root (`USER node`), `read_only`, `tmpfs /tmp`,
-  `cap_drop: ALL`, `no-new-privileges`.
-- MongoDB не має опублікованих портів і живе лише в `internal`-мережі.
-- Назовні дивиться тільки Caddy (80/443).
-- CSP без `unsafe-eval`, `frame-ancestors 'none'`, `form-action 'none'`.
-- Секретів у репозиторії немає: усе, що потрібно, — `MONGO_URL` у compose.
+- Application container: non-root (`USER node`), `read_only`, `tmpfs /tmp`, `cap_drop: ALL`,
+  `no-new-privileges`.
+- MongoDB publishes no ports and lives only on the internal network.
+- Only Caddy is exposed (80/443).
+- CSP without `unsafe-eval`, `frame-ancestors 'none'`, `form-action 'none'`, plus HSTS and nosniff.
+- No secrets in the repository; the only configuration is `MONGO_URL` in Compose.
+- `/api/*` is rate limited (90 requests per minute per IP).
+
+---
+
+## Roadmap
+
+- [ ] `simple` branch — a conventional landing page (hero, services, projects, contacts)
+- [ ] Screenshots or previews for the strongest projects
+- [ ] `og:image` generated at build time instead of reusing the avatar
+
+## License
+
+All rights reserved. Contact the author before reusing the content.
