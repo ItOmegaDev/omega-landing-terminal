@@ -1,0 +1,25 @@
+# Додається в ~/apps/caddy/Caddyfile на сервері 0mega (VPS).
+# Після зміни: docker exec caddy caddy reload --config /etc/caddy/Caddyfile
+
+l.0mega.pp.ua {
+	encode zstd gzip
+
+	reverse_proxy landing:3000 {
+		header_up X-Real-IP {remote_host}
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		X-Frame-Options "DENY"
+		Permissions-Policy "geolocation=(), microphone=(), camera=()"
+		Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
+		-Server
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}

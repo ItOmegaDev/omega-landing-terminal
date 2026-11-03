@@ -1,0 +1,141 @@
+{
+  "name": "Omega",
+  "handle": "ItOmegaDev",
+  "role": {
+    "uk": "Junior MERN Stack / Backend Developer",
+    "en": "Junior MERN Stack / Backend Developer"
+  },
+  "tagline": {
+    "uk": "Пишу бекенд, який не падає, і фронтенд, який не соромно показати.",
+    "en": "I build backends that stay up and frontends you are not ashamed to ship."
+  },
+  "summary": {
+    "uk": "Розробляю веб-додатки на MERN-стеку: REST API, бізнес-логіка, JWT-аутентифікація та MongoDB. Розгортаю проєкти на Linux-серверах через Docker і Nginx.",
+    "en": "I build web applications on the MERN stack: REST APIs, business logic, JWT auth and MongoDB. I deploy to Linux servers with Docker and Nginx."
+  },
+  "location": {
+    "uk": "Україна · віддалено",
+    "en": "Ukraine · remote"
+  },
+  "availability": {
+    "uk": "Відкритий до нових проєктів",
+    "en": "Open to new projects"
+  },
+  "links": [
+    {
+      "id": "github",
+      "label": "GitHub",
+      "url": "https://github.com/ItOmegaDev",
+      "handle": "@ItOmegaDev"
+    },
+    {
+      "id": "telegram",
+      "label": "Telegram",
+      "url": "https://t.me/ItOmega",
+      "handle": "@ItOmega"
+    },
+    {
+      "id": "fiverr",
+      "label": "Fiverr",
+      "url": "https://www.fiverr.com/s/d0pRVwa",
+      "handle": "Order a gig"
+    }
+  ],
+  "services": [
+    {
+      "id": "backend",
+      "label": { "uk": "Backend", "en": "Backend" },
+      "title": {
+        "uk": "REST API та бізнес-логіка",
+        "en": "REST API and business logic"
+      },
+      "description": {
+        "uk": "Проєктую ендпоінти, валідацію та роботу з MongoDB. JWT-аутентифікація, ролі, захист маршрутів.",
+        "en": "Endpoint design, validation and MongoDB data access. JWT authentication, roles, guarded routes."
+      },
+      "stack": ["Node.js", "Express", "MongoDB", "JWT"]
+    },
+    {
+      "id": "fullstack",
+      "label": { "uk": "Full Stack", "en": "Full Stack" },
+      "title": {
+        "uk": "Веб-додатки на MERN",
+        "en": "MERN web applications"
+      },
+      "description": {
+        "uk": "React і Next.js на клієнті, Express на сервері. Від макета до робочого деплою.",
+        "en": "React and Next.js on the client, Express on the server. From layout to a working deploy."
+      },
+      "stack": ["React", "Next.js", "TypeScript", "Vite"]
+    },
+    {
+      "id": "ops",
+      "label": { "uk": "Сервери", "en": "Servers" },
+      "title": {
+        "uk": "Linux та деплой",
+        "en": "Linux and deployment"
+      },
+      "description": {
+        "uk": "Налаштовую сервери, Docker-контейнери, Nginx і reverse proxy з TLS. Тримаю Nextcloud у себе.",
+        "en": "Server setup, Docker containers, Nginx and TLS reverse proxies. I self-host Nextcloud."
+      },
+      "stack": ["Linux", "Docker", "Nginx", "Caddy"]
+    },
+    {
+      "id": "automation",
+      "label": { "uk": "Скрипти", "en": "Scripts" },
+      "title": {
+        "uk": "Парсинг та автоматизація",
+        "en": "Scraping and automation"
+      },
+      "description": {
+        "uk": "Збір, фільтрація й обробка даних. Скрипти, які замінюють рутину на розклад.",
+        "en": "Data collection, filtering and processing. Scripts that replace manual routine."
+      },
+      "stack": ["Python", "Node.js", "Cron", "Bash"]
+    }
+  ],
+  "experience": [
+    {
+      "id": "workshop",
+      "title": { "uk": "Omega Web Workshop", "en": "Omega Web Workshop" },
+      "subtitle": {
+        "uk": "Розробка під замовлення",
+        "en": "Custom development"
+      },
+      "description": {
+        "uk": "Кастомні сайти та серверні REST API для клієнтів: від узгодження вимог до продакшен-деплою.",
+        "en": "Custom websites and backend REST APIs for clients, from requirements to production deploy."
+      }
+    },
+    {
+      "id": "cloud",
+      "title": { "uk": "Self-Hosted Cloud", "en": "Self-Hosted Cloud" },
+      "subtitle": {
+        "uk": "Приватна інфраструктура",
+        "en": "Private infrastructure"
+      },
+      "description": {
+        "uk": "Розгорнув і обслуговую власний Nextcloud на Linux: зберігання, доступ, бекапи, TLS.",
+        "en": "Deployed and maintain a private Nextcloud on Linux: storage, access, backups, TLS."
+      }
+    },
+    {
+      "id": "jas",
+      "title": { "uk": "Автоматизація (JAS)", "en": "Automation (JAS)" },
+      "subtitle": {
+        "uk": "Дані та скрипти",
+        "en": "Data and scripts"
+      },
+      "description": {
+        "uk": "Скрипти збору та фільтрації даних для регулярних задач замість ручної роботи.",
+        "en": "Data collection and filtering scripts that handle recurring tasks instead of manual work."
+      }
+    }
+  ],
+  "stack": [
+    { "group": "Backend", "items": ["Node.js", "Express", "MongoDB", "Mongoose", "JWT", "REST"] },
+    { "group": "Frontend", "items": ["React", "Next.js", "TypeScript", "Vite", "HTML/CSS"] },
+    { "group": "Ops", "items": ["Linux", "Docker", "Nginx", "Caddy", "Bash", "Git"] }
+  ]
+}

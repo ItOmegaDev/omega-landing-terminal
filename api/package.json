@@ -1,0 +1,20 @@
+{
+  "name": "landing-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Express + MongoDB API for the Omega personal landing page",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "express": "4.21.2",
+    "express-rate-limit": "7.5.0",
+    "mongoose": "8.9.5"
+  }
+}
