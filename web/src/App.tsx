@@ -1,83 +1,131 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FALLBACK_PROFILE } from './fallback';
-import type { Lang, Localized, Profile } from './types';
+import type { Lang, Localized, Profile, Project } from './types';
 
 const LANG_KEY = 'omega.lang';
 
+const NAV = [
+  { id: 'work', uk: 'Роботи', en: 'Work' },
+  { id: 'stack', uk: 'Стек', en: 'Stack' },
+  { id: 'services', uk: 'Послуги', en: 'Services' },
+  { id: 'about', uk: 'Про мене', en: 'About' },
+  { id: 'connect', uk: 'Контакти', en: 'Connect' },
+] as const;
+
+const ACCENT: Record<string, string> = {
+  index: '#e9e9e9',
+  work: '#3de598',
+  stack: '#6bd4ff',
+  services: '#f5c26b',
+  about: '#ff8f72',
+  connect: '#46b4e1',
+};
+
 const UI = {
   uk: {
-    navWork: 'Послуги',
-    navExp: 'Досвід',
-    navStack: 'Стек',
-    navContact: 'Контакти',
-    workKicker: '01 / послуги',
-    workTitle: 'Що я роблю',
-    expKicker: '02 / досвід',
-    expTitle: 'Практичний досвід',
-    stackKicker: '03 / інструменти',
-    stackTitle: 'Технології',
-    contactKicker: '04 / контакти',
-    contactTitle: 'Давай зробимо щось робоче',
-    contactText:
-      'Маєш ідею, макет або ламається бекенд — напиши. Відповідаю швидко, оцінюю чесно.',
-    primaryCta: 'Написати в Telegram',
-    secondaryCta: 'Дивитись GitHub',
-    fiverrCta: 'Замовити на Fiverr',
+    available: 'Доступний: так',
+    projectsLink: 'роботи',
+    servicesLink: 'послуги',
+    connectLink: 'контакти',
+    railHint: 'клік відкриває · ← → гортають',
+    kickerWork: '01 / роботи',
+    titleWork: 'Обрані проєкти',
+    subWork: '{n} проєктів · наведи для опису · клік відкриває деталі',
+    open: 'відкрити →',
+    back: '← назад',
+    next: 'наступний',
+    prev: 'попередній',
+    kickerStack: '02 / інструменти',
+    titleStack: 'Технологічний стек',
+    kickerServices: '03 / послуги',
+    titleServices: 'Послуги та вартість',
+    subServices: 'Ціни орієнтовні — фінальна сума після обговорення ТЗ.',
+    from: 'від',
+    perMonth: '/міс',
+    kickerAbout: '04 / про мене',
+    titleAbout: 'Хто я і як працюю',
+    adjacent: 'Суміжні напрямки',
+    experience: 'Практичний досвід',
+    kickerConnect: '05 / контакти',
+    titleConnect: 'Зв’язок',
+    subConnect: 'Пиши в Telegram — відповідаю швидко. Або замов напряму на Fiverr.',
+    community: 'Спільнота',
     views: 'переглядів',
-    offline: 'локальна копія профілю',
     built: 'MERN · Docker · Caddy',
-    termStatus: 'відкритий до роботи',
-    rights: 'Усі права захищені',
+    status: 'статус',
+    year: 'рік',
   },
   en: {
-    navWork: 'Services',
-    navExp: 'Experience',
-    navStack: 'Stack',
-    navContact: 'Contact',
-    workKicker: '01 / services',
-    workTitle: 'What I do',
-    expKicker: '02 / experience',
-    expTitle: 'Hands-on experience',
-    stackKicker: '03 / tools',
-    stackTitle: 'Tech stack',
-    contactKicker: '04 / contact',
-    contactTitle: "Let's build something that works",
-    contactText:
-      'Got an idea, a design, or a backend that is falling over — write to me. Fast replies, honest estimates.',
-    primaryCta: 'Message on Telegram',
-    secondaryCta: 'View GitHub',
-    fiverrCta: 'Order on Fiverr',
+    available: 'Available: Yes',
+    projectsLink: 'work',
+    servicesLink: 'services',
+    connectLink: 'connect',
+    railHint: 'click to open · ← → to browse',
+    kickerWork: '01 / work',
+    titleWork: 'Selected projects',
+    subWork: '{n} projects · hover for a summary · click to open',
+    open: 'open →',
+    back: '← back',
+    next: 'next',
+    prev: 'previous',
+    kickerStack: '02 / tools',
+    titleStack: 'Technology stack',
+    kickerServices: '03 / services',
+    titleServices: 'Services and pricing',
+    subServices: 'Prices are indicative — the final quote follows a scope discussion.',
+    from: 'from',
+    perMonth: '/mo',
+    kickerAbout: '04 / about',
+    titleAbout: 'Who I am and how I work',
+    adjacent: 'Adjacent areas',
+    experience: 'Hands-on experience',
+    kickerConnect: '05 / connect',
+    titleConnect: 'Get in touch',
+    subConnect: 'Message me on Telegram — I reply fast. Or order directly on Fiverr.',
+    community: 'Community',
     views: 'views',
-    offline: 'local profile copy',
     built: 'MERN · Docker · Caddy',
-    termStatus: 'available for work',
-    rights: 'All rights reserved',
+    status: 'status',
+    year: 'year',
   },
 } as const;
+
+type Route = { page: string; id?: string };
+
+function parseHash(): Route {
+  const raw = window.location.hash.replace(/^#\/?/, '');
+  if (!raw) return { page: 'index' };
+  const [page, id] = raw.split('/');
+  return { page: page || 'index', id };
+}
 
 function readLang(): Lang {
   try {
     const stored = window.localStorage.getItem(LANG_KEY);
     if (stored === 'uk' || stored === 'en') return stored;
   } catch {
-    // localStorage can be blocked; fall through to the default.
+    // storage can be blocked; fall back to the default language
   }
   return 'uk';
-}
-
-function linkFor(profile: Profile, id: string): string {
-  return profile.links.find((link) => link.id === id)?.url ?? '#';
 }
 
 export default function App() {
   const [lang, setLang] = useState<Lang>(readLang);
   const [profile, setProfile] = useState<Profile>(FALLBACK_PROFILE);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'offline'>('loading');
+  const [route, setRoute] = useState<Route>(parseHash);
 
   const t = useCallback(
     (value: Localized) => value[lang] ?? value.uk,
     [lang],
   );
   const ui = UI[lang];
+
+  useEffect(() => {
+    const onHash = () => setRoute(parseHash());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -89,46 +137,107 @@ export default function App() {
   }, [lang]);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [route.page, route.id]);
+
+  useEffect(() => {
+    let cancelled = false;
     const controller = new AbortController();
+    // Without this the page would sit on the boot screen if the API hangs.
+    const timer = window.setTimeout(() => controller.abort(), 4000);
 
     fetch('/api/profile', { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json() as Promise<Profile>;
       })
-      .then((data) => setProfile({ ...FALLBACK_PROFILE, ...data }))
+      .then((data) => {
+        if (cancelled) return;
+        setProfile({ ...FALLBACK_PROFILE, ...data });
+        setStatus('ready');
+      })
       .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === 'AbortError') return;
-        // Keeps the bundled fallback profile on screen; no user-facing error.
+        if (cancelled) return;
         console.warn('[profile] api unavailable, using local copy', error);
-      });
+        setStatus('offline');
+      })
+      .finally(() => window.clearTimeout(timer));
 
-    return () => controller.abort();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+      controller.abort();
+    };
   }, []);
 
-  const views = useMemo(() => {
-    if (typeof profile.views !== 'number') return null;
-    return new Intl.NumberFormat(lang === 'uk' ? 'uk-UA' : 'en-US').format(
-      profile.views,
+  const go = useCallback((path: string) => {
+    window.location.hash = `#/${path}`;
+  }, []);
+
+  const projects = profile.projects;
+  const activeProject = useMemo(
+    () => (route.id ? projects.find((p) => p.id === route.id) : undefined),
+    [projects, route.id],
+  );
+
+  const projectIndex = activeProject
+    ? projects.findIndex((p) => p.id === activeProject.id)
+    : -1;
+
+  useEffect(() => {
+    if (!activeProject) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        go('work');
+        return;
+      }
+      if (event.key === 'ArrowRight' && projectIndex < projects.length - 1) {
+        go(`work/${projects[projectIndex + 1].id}`);
+      }
+      if (event.key === 'ArrowLeft' && projectIndex > 0) {
+        go(`work/${projects[projectIndex - 1].id}`);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [activeProject, projectIndex, projects, go]);
+
+  if (status === 'loading') {
+    return (
+      <div className="boot" role="status" aria-live="polite">
+        <p className="boot-line">
+          <span className="boot-prompt">$</span> initialising
+          <span className="cursor-block" aria-hidden="true" />
+        </p>
+        <p className="boot-hint">omega / software engineer</p>
+      </div>
     );
-  }, [profile.views, lang]);
+  }
+
+  const activePage = route.page;
+  const accent = ACCENT[activePage] ?? ACCENT.index;
 
   return (
-    <div className="page">
-      <div className="glow glow-a" aria-hidden="true" />
-      <div className="glow glow-b" aria-hidden="true" />
-
-      <header className="topbar">
-        <a className="brand" href="#top" aria-label="Omega home">
-          <span className="brand-mark">Ω</span>
-          <span className="brand-text">omega</span>
+    <div className="shell" style={{ ['--accent' as string]: accent }}>
+      <header className="masthead">
+        <a className="logo" href="#/" aria-label="Omega — home">
+          OMEGA<span className="logo-slash">/</span>IT0MEGADEV
         </a>
 
         <nav className="nav" aria-label="Main navigation">
-          <a href="#work">{ui.navWork}</a>
-          <a href="#experience">{ui.navExp}</a>
-          <a href="#stack">{ui.navStack}</a>
-          <a href="#contact">{ui.navContact}</a>
+          {NAV.map((item) => (
+            <a
+              key={item.id}
+              href={`#/${item.id}`}
+              className={`nav-link${activePage === item.id ? ' is-active' : ''}`}
+              aria-current={activePage === item.id ? 'page' : undefined}
+            >
+              {item[lang]}
+            </a>
+          ))}
+          <a className="avail" href="#/connect">
+            {ui.available}
+          </a>
         </nav>
 
         <div className="lang" role="group" aria-label="Language">
@@ -146,195 +255,422 @@ export default function App() {
         </div>
       </header>
 
-      <main id="top">
-        <section className="hero">
-          <div className="hero-copy">
-            <p className="status">
-              <span className="status-dot" aria-hidden="true" />
-              {t(profile.availability)}
-            </p>
-
-            <h1 className="hero-title">
-              <span className="hero-name">{profile.name}</span>
-              <span className="hero-sep">/</span>
-              <span className="hero-role">{t(profile.role)}</span>
-            </h1>
-
-            <p className="hero-tagline">{t(profile.tagline)}</p>
-            <p className="hero-summary">{t(profile.summary)}</p>
-
-            <div className="cta-row">
-              <a
-                className="btn btn-primary"
-                href={linkFor(profile, 'telegram')}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {ui.primaryCta}
-                <span aria-hidden="true">↗</span>
-              </a>
-              <a
-                className="btn"
-                href={linkFor(profile, 'github')}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {ui.secondaryCta}
-              </a>
-            </div>
-
-            <ul className="meta-row">
-              <li>
-                <span className="meta-key">location</span>
-                {t(profile.location)}
-              </li>
-              <li>
-                <span className="meta-key">github</span>
-                {profile.handle}
-              </li>
-            </ul>
-          </div>
-
-          <div className="hero-side">
-            <div className="portrait">
-              <img
-                src="/avatar.jpg"
-                alt={profile.name}
-                width={460}
-                height={460}
-                loading="eager"
-                decoding="async"
-              />
-            </div>
-
-            <div className="terminal" aria-hidden="true">
-              <div className="terminal-bar">
-                <span className="dot red" />
-                <span className="dot amber" />
-                <span className="dot green" />
-                <span className="terminal-path">~/omega</span>
-              </div>
-              <div className="terminal-body">
-                <p>
-                  <span className="c-prompt">$</span> whoami
-                </p>
-                <p className="c-out">omega · mern / backend</p>
-                <p>
-                  <span className="c-prompt">$</span> cat stack.txt
-                </p>
-                <p className="c-out">node express mongodb react</p>
-                <p>
-                  <span className="c-prompt">$</span> status
-                </p>
-                <p className="c-ok">
-                  ● {ui.termStatus}
-                  <span className="caret" />
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="work" className="section">
-          <header className="section-head">
-            <p className="kicker">{ui.workKicker}</p>
-            <h2>{ui.workTitle}</h2>
-          </header>
-
-          <div className="cards">
-            {profile.services.map((service, index) => (
-              <article className="card" key={service.id}>
-                <span className="card-index">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <p className="card-label">{t(service.label)}</p>
-                <h3>{t(service.title)}</h3>
-                <p className="card-text">{t(service.description)}</p>
-                <ul className="chips">
-                  {service.stack.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="experience" className="section">
-          <header className="section-head">
-            <p className="kicker">{ui.expKicker}</p>
-            <h2>{ui.expTitle}</h2>
-          </header>
-
-          <ol className="timeline">
-            {profile.experience.map((item) => (
-              <li className="timeline-item" key={item.id}>
-                <div className="timeline-marker" aria-hidden="true" />
-                <div className="timeline-body">
-                  <h3>{t(item.title)}</h3>
-                  <p className="timeline-sub">{t(item.subtitle)}</p>
-                  <p className="timeline-text">{t(item.description)}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <section id="stack" className="section">
-          <header className="section-head">
-            <p className="kicker">{ui.stackKicker}</p>
-            <h2>{ui.stackTitle}</h2>
-          </header>
-
-          <div className="stack-grid">
-            {profile.stack.map((group) => (
-              <div className="stack-group" key={group.group}>
-                <p className="stack-name">{group.group}</p>
-                <ul className="chips">
-                  {group.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="contact" className="section contact">
-          <header className="section-head">
-            <p className="kicker">{ui.contactKicker}</p>
-            <h2>{ui.contactTitle}</h2>
-          </header>
-          <p className="contact-text">{ui.contactText}</p>
-
-          <div className="link-grid">
-            {profile.links.map((link) => (
-              <a
-                className="link-card"
-                key={link.id}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="link-label">{link.label}</span>
-                <span className="link-handle">{link.handle}</span>
-                <span className="link-arrow" aria-hidden="true">↗</span>
-              </a>
-            ))}
-          </div>
-        </section>
+      <main className="stage">
+        {activeProject ? (
+          <ProjectDetail
+            project={activeProject}
+            index={projectIndex}
+            total={projects.length}
+            t={t}
+            ui={ui}
+            go={go}
+            onPrev={
+              projectIndex > 0
+                ? () => go(`work/${projects[projectIndex - 1].id}`)
+                : undefined
+            }
+            onNext={
+              projectIndex < projects.length - 1
+                ? () => go(`work/${projects[projectIndex + 1].id}`)
+                : undefined
+            }
+          />
+        ) : activePage === 'work' ? (
+          <WorkPage profile={profile} t={t} ui={ui} go={go} />
+        ) : activePage === 'stack' ? (
+          <StackPage profile={profile} t={t} ui={ui} go={go} />
+        ) : activePage === 'services' ? (
+          <ServicesPage profile={profile} t={t} ui={ui} go={go} />
+        ) : activePage === 'about' ? (
+          <AboutPage profile={profile} t={t} ui={ui} go={go} />
+        ) : activePage === 'connect' ? (
+          <ConnectPage profile={profile} t={t} ui={ui} go={go} />
+        ) : (
+          <CoverPage
+            profile={profile}
+            t={t}
+            ui={ui}
+            go={go}
+            lang={lang}
+          />
+        )}
       </main>
 
-      <footer className="footer">
-        <p>
-          © {new Date().getFullYear()} {profile.name}
-          <span className="footer-dot" aria-hidden="true">·</span>
-          {ui.built}
-        </p>
-        <p className="footer-meta">
-          {views ? `${views} ${ui.views}` : ui.offline}
-        </p>
+      <footer className="colophon">
+        <span>
+          © {new Date().getFullYear()} {profile.brand}
+        </span>
+        <span className="colophon-sep">/</span>
+        <span>{ui.built}</span>
+        {profile.views ? (
+          <>
+            <span className="colophon-sep">/</span>
+            <span>
+              {new Intl.NumberFormat(lang === 'uk' ? 'uk-UA' : 'en-US').format(
+                profile.views,
+              )}{' '}
+              {ui.views}
+            </span>
+          </>
+        ) : null}
       </footer>
     </div>
+  );
+}
+
+interface Common {
+  t: (value: Localized) => string;
+  ui: (typeof UI)['uk'] | (typeof UI)['en'];
+  go: (path: string) => void;
+}
+
+function CoverPage({
+  profile,
+  lang,
+  ...rest
+}: { profile: Profile; lang: Lang } & Common) {
+  const { t, ui, go } = rest;
+
+  return (
+    <section className="cover">
+      <p className="cover-kicker">
+        <span className="dot" aria-hidden="true" />
+        {t(profile.status)} · {t(profile.location)}
+      </p>
+
+      <h1 className="cover-title">
+        {profile.brand}
+        <span className="cursor-block" aria-hidden="true" />
+      </h1>
+
+      <p className="cover-sub">
+        {t(profile.title)} <span className="slash">/</span>{' '}
+        {t(profile.subtitle)}
+      </p>
+
+      <p className="cover-intro">{t(profile.intro)}</p>
+
+      {profile.focus.length > 0 ? (
+        <dl className="focus-grid">
+          {profile.focus.map((item) => (
+            <div className="focus-item" key={item.label[lang]}>
+              <dt className="focus-label">{t(item.label)}</dt>
+              <dd className="focus-text">{t(item.text)}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
+
+      <p className="cover-meta">{t(profile.meta)}</p>
+
+      <div className="cover-links">
+        <button type="button" className="ghost-link" onClick={() => go('work')}>
+          {ui.projectsLink} ({profile.projects.length})
+        </button>
+        <button
+          type="button"
+          className="ghost-link"
+          onClick={() => go('services')}
+        >
+          {ui.servicesLink}
+        </button>
+        <button
+          type="button"
+          className="ghost-link"
+          onClick={() => go('connect')}
+        >
+          {ui.connectLink}
+        </button>
+      </div>
+
+      <p className="cover-ticker" aria-hidden="true">
+        node · go · react · next · postgres · mongo · docker · linux · velocity
+      </p>
+    </section>
+  );
+}
+
+function WorkPage({
+  profile,
+  ...rest
+}: { profile: Profile } & Common) {
+  const { t, ui, go } = rest;
+
+  return (
+    <section className="page">
+      <header className="page-head">
+        <p className="kicker">{ui.kickerWork}</p>
+        <h2 className="page-title">{ui.titleWork}</h2>
+        <p className="page-sub">
+          {ui.subWork.replace('{n}', String(profile.projects.length))}
+        </p>
+      </header>
+
+      <div className="rail" role="list">
+        {profile.projects.map((project, index) => (
+          <button
+            type="button"
+            role="listitem"
+            className="tile"
+            key={project.id}
+            onClick={() => go(`work/${project.id}`)}
+          >
+            <span className="tile-ghost" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <span className="tile-top">
+              <span className="tile-index">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span className="tile-year">{project.year}</span>
+            </span>
+            <span className="tile-name">{project.name}</span>
+            <span className="tile-cat">{t(project.category)}</span>
+            <span className="tile-stack">{project.stack.slice(0, 3).join(' · ')}</span>
+            <span className="tile-overlay">
+              <span className="tile-summary">{t(project.summary)}</span>
+              <span className="tile-open">{ui.open}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <div className="rail-foot">
+        <span>
+          01 — {String(profile.projects.length).padStart(2, '0')}
+        </span>
+        <span>{ui.railHint}</span>
+      </div>
+    </section>
+  );
+}
+
+function ProjectDetail({
+  project,
+  index,
+  total,
+  ...rest
+}: {
+  project: Project;
+  index: number;
+  total: number;
+  onPrev?: () => void;
+  onNext?: () => void;
+} & Common) {
+  const { t, ui, go, onPrev, onNext } = rest;
+
+  return (
+    <article className="detail">
+      <div className="detail-bar">
+        <button type="button" className="detail-back" onClick={() => go('work')}>
+          {ui.back}
+        </button>
+        <span className="detail-counter">
+          {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+        </span>
+      </div>
+
+      <p className="kicker">
+        {t(project.category)} · {project.year}
+      </p>
+      <h2 className="detail-title">{project.name}</h2>
+      <p className="detail-status">
+        <span className="dot" aria-hidden="true" />
+        {t(project.status)}
+      </p>
+
+      <p className="detail-summary">{t(project.summary)}</p>
+
+      <ul className="detail-points">
+        {project.highlights.map((point) => (
+          <li key={point.uk}>{t(point)}</li>
+        ))}
+      </ul>
+
+      <div className="detail-stack">
+        <span className="detail-stack-label">stack</span>
+        <ul className="chips">
+          {project.stack.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+
+      <nav className="detail-nav">
+        {onPrev ? (
+          <button type="button" className="ghost-link" onClick={onPrev}>
+            ← {ui.prev}
+          </button>
+        ) : (
+          <span />
+        )}
+        {onNext ? (
+          <button type="button" className="ghost-link" onClick={onNext}>
+            {ui.next} →
+          </button>
+        ) : (
+          <span />
+        )}
+      </nav>
+    </article>
+  );
+}
+
+function StackPage({ profile, ...rest }: { profile: Profile } & Common) {
+  const { ui } = rest;
+
+  return (
+    <section className="page">
+      <header className="page-head">
+        <p className="kicker">{ui.kickerStack}</p>
+        <h2 className="page-title">{ui.titleStack}</h2>
+      </header>
+
+      <div className="stack-grid">
+        {profile.stack.map((group) => (
+          <div className="stack-group" key={group.group}>
+            <p className="stack-name">{group.group}</p>
+            <ul className="chips">
+              {group.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ServicesPage({ profile, ...rest }: { profile: Profile } & Common) {
+  const { t, ui } = rest;
+
+  return (
+    <section className="page">
+      <header className="page-head">
+        <p className="kicker">{ui.kickerServices}</p>
+        <h2 className="page-title">{ui.titleServices}</h2>
+        <p className="page-sub">{ui.subServices}</p>
+      </header>
+
+      <div className="ledger">
+        {profile.services.map((service, index) => (
+          <div className="ledger-row" key={service.id}>
+            <span className="ledger-index">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <span className="ledger-main">
+              <span className="ledger-name">{t(service.name)}</span>
+              <span className="ledger-desc">{t(service.description)}</span>
+            </span>
+            <span className="ledger-term">{t(service.term)}</span>
+            <span className="ledger-price">
+              {ui.from} ${service.price}
+              {service.monthly ? ui.perMonth : ''}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <ul className="engagement">
+        {profile.engagement.map((item) => (
+          <li key={item.uk}>{t(item)}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function AboutPage({ profile, ...rest }: { profile: Profile } & Common) {
+  const { t, ui } = rest;
+
+  return (
+    <section className="page">
+      <header className="page-head">
+        <p className="kicker">{ui.kickerAbout}</p>
+        <h2 className="page-title">{ui.titleAbout}</h2>
+      </header>
+
+      <div className="about-copy">
+        {profile.about.paragraphs.map((paragraph) => (
+          <p key={paragraph.uk}>{t(paragraph)}</p>
+        ))}
+      </div>
+
+      <div className="dir-grid">
+        {profile.about.directions.map((direction) => (
+          <article className="dir" key={direction.title.uk}>
+            <h3 className="dir-title">{t(direction.title)}</h3>
+            <p className="dir-text">{t(direction.text)}</p>
+            <ul className="chips chips--tight">
+              {direction.tech.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+
+      <div className="about-columns">
+        <div>
+          <p className="stack-name">{ui.adjacent}</p>
+          <ul className="plain-list">
+            {profile.about.adjacent.map((item) => (
+              <li key={item.uk}>{t(item)}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p className="stack-name">{ui.experience}</p>
+          <ul className="plain-list">
+            {profile.about.experience.map((item) => (
+              <li key={item.title.uk}>
+                <strong>{t(item.title)}</strong> — {t(item.text)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ConnectPage({ profile, ...rest }: { profile: Profile } & Common) {
+  const { t, ui } = rest;
+
+  return (
+    <section className="page">
+      <header className="page-head">
+        <p className="kicker">{ui.kickerConnect}</p>
+        <h2 className="page-title">{ui.titleConnect}</h2>
+        <p className="page-sub">{ui.subConnect}</p>
+      </header>
+
+      <ul className="contact-list">
+        {profile.contacts.map((contact) => (
+          <li key={contact.id}>
+            <a
+              className="contact-row"
+              href={contact.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="contact-label">{contact.label}</span>
+              <span className="contact-handle">{contact.handle}</span>
+              <span className="contact-note">{t(contact.note)}</span>
+              <span className="contact-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div className="community">
+        <p className="stack-name">{ui.community}</p>
+        <h3 className="community-title">{t(profile.community.title)}</h3>
+        <p className="community-text">{t(profile.community.text)}</p>
+      </div>
+    </section>
   );
 }

@@ -1,141 +1,812 @@
 {
-  "name": "Omega",
+  "version": "2026-11-03-2",
+  "brand": "Omega",
   "handle": "ItOmegaDev",
-  "role": {
-    "uk": "Junior MERN Stack / Backend Developer",
-    "en": "Junior MERN Stack / Backend Developer"
+  "title": {
+    "uk": "Software Engineer",
+    "en": "Software Engineer"
   },
-  "tagline": {
-    "uk": "Пишу бекенд, який не падає, і фронтенд, який не соромно показати.",
-    "en": "I build backends that stay up and frontends you are not ashamed to ship."
+  "subtitle": {
+    "uk": "Full-Stack & Infrastructure",
+    "en": "Full-Stack & Infrastructure"
   },
-  "summary": {
-    "uk": "Розробляю веб-додатки на MERN-стеку: REST API, бізнес-логіка, JWT-аутентифікація та MongoDB. Розгортаю проєкти на Linux-серверах через Docker і Nginx.",
-    "en": "I build web applications on the MERN stack: REST APIs, business logic, JWT auth and MongoDB. I deploy to Linux servers with Docker and Nginx."
+  "status": {
+    "uk": "Відкритий до проєктів",
+    "en": "Available for work"
   },
   "location": {
     "uk": "Україна · віддалено",
     "en": "Ukraine · remote"
   },
-  "availability": {
-    "uk": "Відкритий до нових проєктів",
-    "en": "Open to new projects"
+  "intro": {
+    "uk": "Проєктую, розробляю та розгортаю вебзастосунки повного циклу — від інтерфейсу до серверної інфраструктури. Працюю з акцентом на надійність, продуктивність і чисту архітектуру.",
+    "en": "I design, build and deploy full-cycle web applications — from the interface down to the server infrastructure. My focus is reliability, performance and clean architecture."
   },
-  "links": [
+  "meta": {
+    "uk": "Junior за посадою, інженер за підходом: частина напрямків — практичний досвід, частина — те, що активно вивчаю.",
+    "en": "Junior by title, engineer by approach: some areas are hands-on experience, others are what I am actively learning."
+  },
+  "focus": [
+    {
+      "label": {
+        "uk": "Web",
+        "en": "Web"
+      },
+      "text": {
+        "uk": "React, Next.js, TypeScript — інтерфейси, які швидко вантажаться.",
+        "en": "React, Next.js, TypeScript — interfaces that load fast."
+      }
+    },
+    {
+      "label": {
+        "uk": "Backend",
+        "en": "Backend"
+      },
+      "text": {
+        "uk": "Node.js, Go, REST API, MongoDB, PostgreSQL, авторизація.",
+        "en": "Node.js, Go, REST APIs, MongoDB, PostgreSQL, authorization."
+      }
+    },
+    {
+      "label": {
+        "uk": "Infra",
+        "en": "Infra"
+      },
+      "text": {
+        "uk": "Linux, Docker, Nginx, TLS, деплой і супровід серверів.",
+        "en": "Linux, Docker, Nginx, TLS, deployment and server upkeep."
+      }
+    }
+  ],
+  "projects": [
+    {
+      "id": "controlpanel",
+      "name": "ControlPanel",
+      "category": {
+        "uk": "SaaS / панель хостингу",
+        "en": "SaaS / hosting panel"
+      },
+      "year": "2026",
+      "status": {
+        "uk": "UI-прототип",
+        "en": "UI prototype"
+      },
+      "summary": {
+        "uk": "Панель керування ігровими серверами: ноди, черги задач, маркетплейс eggs, білінг і мультитенантність.",
+        "en": "Game server control panel: nodes, task queues, an eggs marketplace, billing and multi-tenancy."
+      },
+      "highlights": [
+        {
+          "uk": "Модулі: сервери, ноди, планувальник розміщення, білінг, white-label, аудит-логи.",
+          "en": "Modules: servers, nodes, placement scheduler, billing, white-label, audit logs."
+        },
+        {
+          "uk": "Дизайн-система на Tailwind v4 + Motion, командна палітра Cmd+K.",
+          "en": "Design system on Tailwind v4 + Motion, Cmd+K command palette."
+        },
+        {
+          "uk": "Зараз працює на мок-даних; бекенд підключається наступним кроком.",
+          "en": "Currently running on mock data; the backend is the next step."
+        }
+      ],
+      "stack": [
+        "React 19",
+        "TypeScript",
+        "Vite",
+        "Tailwind",
+        "Express"
+      ]
+    },
+    {
+      "id": "edgeproxy",
+      "name": "EdgeProxy",
+      "category": {
+        "uk": "Мережі / проксі",
+        "en": "Networking / proxy"
+      },
+      "year": "2026",
+      "status": {
+        "uk": "У розробці",
+        "en": "In development"
+      },
+      "summary": {
+        "uk": "Edge-проксі з бінарним мультиплексором тунелів, ACME-сертифікатами та контролем навантаження.",
+        "en": "Edge proxy with a binary tunnel multiplexer, ACME certificates and load control."
+      },
+      "highlights": [
+        {
+          "uk": "Data plane на Go: TLS-термінація, видача сертифікатів, роутинг за Host-заголовком.",
+          "en": "Go data plane: TLS termination, certificate issuance, host-header routing."
+        },
+        {
+          "uk": "Власний фреймований протокол тунелю (SYN / DATA / FIN / PING) замість HTTP-обгортки.",
+          "en": "Custom framed tunnel protocol (SYN / DATA / FIN / PING) instead of an HTTP wrapper."
+        },
+        {
+          "uk": "Control plane: REST + WebSocket, телеметрія, керування тунелями й сертифікатами.",
+          "en": "Control plane: REST + WebSocket, telemetry, tunnel and certificate management."
+        }
+      ],
+      "stack": [
+        "Go",
+        "Node.js",
+        "React",
+        "PostgreSQL",
+        "Docker"
+      ]
+    },
+    {
+      "id": "omegasmp",
+      "name": "OmegaSMP",
+      "category": {
+        "uk": "Ігрова інфраструктура",
+        "en": "Game infrastructure"
+      },
+      "year": "2025—2026",
+      "status": {
+        "uk": "Працює",
+        "en": "Live"
+      },
+      "summary": {
+        "uk": "Minecraft-мережа на Velocity + Purpur: проксі, бекони, крос-платформа Java і Bedrock.",
+        "en": "Minecraft network on Velocity + Purpur: proxy, backends, cross-platform Java and Bedrock."
+      },
+      "highlights": [
+        {
+          "uk": "Авторизація до входу у світ: прив'язка Discord + власний пароль у limbo-світі.",
+          "en": "Pre-world authorization: Discord linking plus a local password inside a limbo world."
+        },
+        {
+          "uk": "Geyser/Floodgate — Bedrock-гравці в одному світі з Java без окремих правил.",
+          "en": "Geyser/Floodgate — Bedrock players share the world with Java under the same rules."
+        },
+        {
+          "uk": "Панель, логи та резервні копії; усе поза бекендом закрито від публічної мережі.",
+          "en": "Panel, logs and backups; everything outside the backend is closed to the public network."
+        }
+      ],
+      "stack": [
+        "Velocity",
+        "Purpur",
+        "Java",
+        "Docker",
+        "Linux"
+      ]
+    },
+    {
+      "id": "discordauth",
+      "name": "DiscordAuth",
+      "category": {
+        "uk": "Java-плагіни",
+        "en": "Java plugins"
+      },
+      "year": "2025—2026",
+      "status": {
+        "uk": "Працює",
+        "en": "Live"
+      },
+      "summary": {
+        "uk": "Velocity-плагін, що зв'язує Minecraft-акаунт із Discord і вимагає пароль до входу у гру.",
+        "en": "Velocity plugin that links a Minecraft account to Discord and requires a password before joining."
+      },
+      "highlights": [
+        {
+          "uk": "Код верифікації в limbo + підтвердження командою в Discord.",
+          "en": "Verification code in limbo plus confirmation with a Discord command."
+        },
+        {
+          "uk": "Паролі у BCrypt, ліміти спроб, тимчасові сесії після transfer-переходу.",
+          "en": "BCrypt password hashes, attempt limits, temporary sessions after a transfer hop."
+        },
+        {
+          "uk": "Плагін-компаньйон для бекенду віддає Discord-нік у TAB і чат через PlaceholderAPI.",
+          "en": "A companion backend plugin exposes the Discord nickname to TAB and chat via PlaceholderAPI."
+        }
+      ],
+      "stack": [
+        "Java 25",
+        "Velocity",
+        "JDA",
+        "BCrypt",
+        "PlaceholderAPI"
+      ]
+    },
+    {
+      "id": "omegaos",
+      "name": "OmegaOS",
+      "category": {
+        "uk": "Експеримент",
+        "en": "Experiment"
+      },
+      "year": "2026",
+      "status": {
+        "uk": "Демо",
+        "en": "Demo"
+      },
+      "summary": {
+        "uk": "Браузерна операційна система на чистому HTML/CSS/JS: вікна, термінал, файли, редактор.",
+        "en": "A browser operating system in plain HTML/CSS/JS: windows, terminal, files, editor."
+      },
+      "highlights": [
+        {
+          "uk": "Без збірки та зовнішніх бібліотек — відкривається навіть із файлу.",
+          "en": "No build step and no external libraries — it runs even from a local file."
+        },
+        {
+          "uk": "Віртуальна файлова система та термінал із 15+ командами й автодоповненням.",
+          "en": "Virtual file system and a terminal with 15+ commands and tab completion."
+        },
+        {
+          "uk": "Віконний менеджер, теми, генеративна музика на Web Audio API.",
+          "en": "Window manager, themes, generative music via the Web Audio API."
+        }
+      ],
+      "stack": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Web Audio"
+      ]
+    },
+    {
+      "id": "pedagogical",
+      "name": "Pedagogical Hub",
+      "category": {
+        "uk": "Освітня платформа",
+        "en": "Education platform"
+      },
+      "year": "2025",
+      "status": {
+        "uk": "MVP",
+        "en": "MVP"
+      },
+      "summary": {
+        "uk": "Хаб обміну навчальними матеріалами між викладачами, студентами та учнями.",
+        "en": "A hub for sharing learning material between teachers, students and pupils."
+      },
+      "highlights": [
+        {
+          "uk": "Вхід через Google, ролі: викладач, студент, учень.",
+          "en": "Google sign-in with teacher, student and pupil roles."
+        },
+        {
+          "uk": "Вбудований переглядач PDF, презентацій і фотогалерей без завантаження.",
+          "en": "Built-in viewer for PDFs, slide decks and photo galleries without downloads."
+        },
+        {
+          "uk": "Коментарі в реальному часі, збережене, пошук за рівнем освіти.",
+          "en": "Real-time comments, saved items, search by education level."
+        }
+      ],
+      "stack": [
+        "React 19",
+        "TypeScript",
+        "Firebase",
+        "Tailwind"
+      ]
+    },
+    {
+      "id": "nytka",
+      "name": "Нитка",
+      "category": {
+        "uk": "E-commerce",
+        "en": "E-commerce"
+      },
+      "year": "2025",
+      "status": {
+        "uk": "MVP",
+        "en": "MVP"
+      },
+      "summary": {
+        "uk": "Платформа індивідуального пошиву: каталог, конструктор мірок, замовлення й адмін-панель.",
+        "en": "Made-to-measure tailoring platform: catalogue, measurement builder, orders and admin panel."
+      },
+      "highlights": [
+        {
+          "uk": "Конструктор мірок із валідацією замість стандартних S/M/L.",
+          "en": "A measurement builder with validation instead of standard S/M/L."
+        },
+        {
+          "uk": "Адмінка: аналітика на Recharts/D3, пайплайн статусів замовлення, керування оплатою.",
+          "en": "Admin: Recharts/D3 analytics, order status pipeline, payment method control."
+        },
+        {
+          "uk": "Firestore як основна база з локальним кешем і автосинхронізацією.",
+          "en": "Firestore as the primary database with a local cache and auto-sync."
+        }
+      ],
+      "stack": [
+        "React 18",
+        "Node.js",
+        "Express",
+        "Firebase",
+        "Recharts"
+      ]
+    },
+    {
+      "id": "jas",
+      "name": "JAS",
+      "category": {
+        "uk": "Автоматизація",
+        "en": "Automation"
+      },
+      "year": "2025",
+      "status": {
+        "uk": "Внутрішній",
+        "en": "Internal"
+      },
+      "summary": {
+        "uk": "Набір скриптів для збору, фільтрації та підготовки даних за розкладом.",
+        "en": "A set of scripts that collect, filter and prepare data on a schedule."
+      },
+      "highlights": [
+        {
+          "uk": "Парсинг і нормалізація даних із різних джерел.",
+          "en": "Scraping and normalising data from multiple sources."
+        },
+        {
+          "uk": "Фільтри, дедуплікація, звіти у зручному форматі.",
+          "en": "Filters, de-duplication and reports in a usable format."
+        },
+        {
+          "uk": "Запуск за розписом замість ручної роботи.",
+          "en": "Scheduled runs instead of manual routine."
+        }
+      ],
+      "stack": [
+        "Python",
+        "Node.js",
+        "Bash",
+        "Cron"
+      ]
+    }
+  ],
+  "stack": [
+    {
+      "group": "Frontend",
+      "items": [
+        "Next.js",
+        "React 18/19",
+        "TypeScript",
+        "Tailwind v4",
+        "Motion",
+        "Vite"
+      ]
+    },
+    {
+      "group": "Backend",
+      "items": [
+        "Node.js",
+        "Express",
+        "Go",
+        "REST API",
+        "JWT",
+        "Telegram bots"
+      ]
+    },
+    {
+      "group": "Data",
+      "items": [
+        "MongoDB",
+        "PostgreSQL",
+        "Firebase"
+      ]
+    },
+    {
+      "group": "Infrastructure",
+      "items": [
+        "Linux",
+        "Arch",
+        "Ubuntu Server",
+        "Docker",
+        "Nginx",
+        "Caddy",
+        "SSH",
+        "TLS"
+      ]
+    },
+    {
+      "group": "Game servers",
+      "items": [
+        "Velocity",
+        "Purpur/Paper",
+        "LimboAPI",
+        "Geyser",
+        "TAB"
+      ]
+    },
+    {
+      "group": "Tooling",
+      "items": [
+        "Git",
+        "GitHub",
+        "Figma",
+        "Maven",
+        "n8n",
+        "Ollama"
+      ]
+    }
+  ],
+  "services": [
+    {
+      "id": "page",
+      "name": {
+        "uk": "Проста сторінка",
+        "en": "Simple page"
+      },
+      "description": {
+        "uk": "Односторінковий сайт: структура, верстка, адаптивність, базова SEO-розмітка.",
+        "en": "A single-page site: structure, layout, responsiveness, basic SEO markup."
+      },
+      "price": 30,
+      "term": {
+        "uk": "1—2 дні",
+        "en": "1—2 days"
+      }
+    },
+    {
+      "id": "card",
+      "name": {
+        "uk": "Сайт-візитка / портфоліо",
+        "en": "Business card / portfolio"
+      },
+      "description": {
+        "uk": "4—6 екранів, кілька розділів, контакти, форма зв'язку, деплой на ваш домен.",
+        "en": "4—6 screens, several sections, contacts, a contact form, deployment to your domain."
+      },
+      "price": 50,
+      "term": {
+        "uk": "2—3 дні",
+        "en": "2—3 days"
+      }
+    },
+    {
+      "id": "landing",
+      "name": {
+        "uk": "Лендинг",
+        "en": "Landing page"
+      },
+      "description": {
+        "uk": "Промо-сторінка з логікою переконання: офер, переваги, соцдокази, заклики до дії.",
+        "en": "A promotional page built to persuade: offer, benefits, social proof, calls to action."
+      },
+      "price": 60,
+      "term": {
+        "uk": "2—4 дні",
+        "en": "2—4 days"
+      }
+    },
+    {
+      "id": "api",
+      "name": {
+        "uk": "REST API + база",
+        "en": "REST API + database"
+      },
+      "description": {
+        "uk": "Серверна логіка, схема даних, авторизація, валідація, документація ендпоінтів.",
+        "en": "Server logic, data schema, authorization, validation, endpoint documentation."
+      },
+      "price": 90,
+      "term": {
+        "uk": "4—7 днів",
+        "en": "4—7 days"
+      }
+    },
+    {
+      "id": "app",
+      "name": {
+        "uk": "Вебзастосунок",
+        "en": "Web application"
+      },
+      "description": {
+        "uk": "Кастомний функціонал: кабінети, ролі, адмін-панель, інтеграції зі сторонніми API.",
+        "en": "Custom functionality: accounts, roles, an admin panel, third-party API integrations."
+      },
+      "price": 150,
+      "term": {
+        "uk": "7—14 днів",
+        "en": "7—14 days"
+      }
+    },
+    {
+      "id": "deploy",
+      "name": {
+        "uk": "Деплой і сервер",
+        "en": "Deployment and server"
+      },
+      "description": {
+        "uk": "Docker, Nginx/Caddy, TLS-сертифікат, домен, автоперезапуск, базова діагностика.",
+        "en": "Docker, Nginx/Caddy, TLS certificate, domain, auto-restart, basic diagnostics."
+      },
+      "price": 40,
+      "term": {
+        "uk": "1—2 дні",
+        "en": "1—2 days"
+      }
+    },
+    {
+      "id": "fix",
+      "name": {
+        "uk": "Правки та виправлення",
+        "en": "Revisions and fixes"
+      },
+      "description": {
+        "uk": "Точкові зміни в готовому сайті, виправлення верстки або логіки.",
+        "en": "Targeted changes to an existing site, layout or logic fixes."
+      },
+      "price": 5,
+      "term": {
+        "uk": "від 1 год",
+        "en": "from 1 hour"
+      }
+    },
+    {
+      "id": "support",
+      "name": {
+        "uk": "Супровід",
+        "en": "Maintenance"
+      },
+      "description": {
+        "uk": "Оновлення, бекапи, дрібні доробки, контроль що все працює.",
+        "en": "Updates, backups, small improvements, keeping things healthy."
+      },
+      "price": 15,
+      "monthly": true,
+      "term": {
+        "uk": "щомісяця",
+        "en": "per month"
+      }
+    }
+  ],
+  "engagement": [
+    {
+      "uk": "Фіксована ціна за проєкт; точний розрахунок — після обговорення ТЗ.",
+      "en": "Fixed price per project; the final quote follows a scope discussion."
+    },
+    {
+      "uk": "Передоплата 50%, решта — після здачі та перевірки.",
+      "en": "50% upfront, the balance on delivery and review."
+    },
+    {
+      "uk": "Повний вихідний код і 3 дні безоплатних правок після здачі.",
+      "en": "Full source code and 3 days of free revisions after delivery."
+    },
+    {
+      "uk": "Мобільна адаптація входить у вартість, якщо робиться разом із сайтом.",
+      "en": "Mobile adaptation is included when built together with the site."
+    }
+  ],
+  "about": {
+    "paragraphs": [
+      {
+        "uk": "Я — Software Engineer із фокусом на Full-Stack та інфраструктуру. Мені цікаво не просто зробити сторінку, а довести систему до стану, коли нею можна користуватися щодня: передбачувані деплої, зрозумілі логи, зрозуміла структура даних.",
+        "en": "I am a Software Engineer focused on full-stack work and infrastructure. I care about more than shipping a page — I care about getting a system to the state where people can rely on it daily: predictable deploys, readable logs, sensible data structures."
+      },
+      {
+        "uk": "Поєдную розробку з роботою на серверах: Linux, Docker, Nginx/Caddy, домени й TLS. Частина проєктів — власні, частина — замовлення. Ігрові сервери — окремий напрямок, де інженерія стикається з реальним навантаженням і реальними людьми.",
+        "en": "I combine development with hands-on server work: Linux, Docker, Nginx/Caddy, domains and TLS. Some projects are mine, some are client work. Game servers are a separate direction where engineering meets real load and real people."
+      }
+    ],
+    "directions": [
+      {
+        "title": {
+          "uk": "Full-Stack Web Development",
+          "en": "Full-Stack Web Development"
+        },
+        "text": {
+          "uk": "Сайти й вебзастосунки від інтерфейсу до сервера.",
+          "en": "Websites and applications from the interface to the server."
+        },
+        "tech": [
+          "React",
+          "Next.js",
+          "TypeScript",
+          "Node.js",
+          "MERN"
+        ]
+      },
+      {
+        "title": {
+          "uk": "Backend Development",
+          "en": "Backend Development"
+        },
+        "text": {
+          "uk": "Серверна логіка, авторизація, бази даних, обробка запитів.",
+          "en": "Server logic, authorization, databases, request handling."
+        },
+        "tech": [
+          "Node.js",
+          "Go",
+          "Express",
+          "REST",
+          "MongoDB",
+          "PostgreSQL"
+        ]
+      },
+      {
+        "title": {
+          "uk": "DevOps & Infrastructure",
+          "en": "DevOps & Infrastructure"
+        },
+        "text": {
+          "uk": "Розгортання, контейнеризація, керування Linux-серверами, автоматизація.",
+          "en": "Deployment, containerisation, Linux server management, automation."
+        },
+        "tech": [
+          "Linux",
+          "Docker",
+          "CI/CD",
+          "SSH",
+          "Monitoring"
+        ]
+      },
+      {
+        "title": {
+          "uk": "Systems & Network Programming",
+          "en": "Systems & Network Programming"
+        },
+        "text": {
+          "uk": "Мережеві сервіси, проксі, CLI-інструменти, взаємодія з системою.",
+          "en": "Network services, proxies, CLI tools, system-level interaction."
+        },
+        "tech": [
+          "Go",
+          "TCP/HTTP",
+          "Processes",
+          "Sockets",
+          "CLI"
+        ]
+      },
+      {
+        "title": {
+          "uk": "Game Server Engineering",
+          "en": "Game Server Engineering"
+        },
+        "text": {
+          "uk": "Налаштування, підтримка й розвиток ігрових серверів.",
+          "en": "Setting up, maintaining and evolving game servers."
+        },
+        "tech": [
+          "Minecraft",
+          "Paper/Purpur",
+          "Velocity",
+          "Plugins"
+        ]
+      },
+      {
+        "title": {
+          "uk": "SaaS Administration",
+          "en": "SaaS Administration"
+        },
+        "text": {
+          "uk": "Мультитенантність, ролі й політики доступу, білінг, плани, white-label.",
+          "en": "Multi-tenancy, roles and access policies, billing, plans, white-label."
+        },
+        "tech": [
+          "Multi-tenancy",
+          "RBAC",
+          "Billing",
+          "Audit logs"
+        ]
+      },
+      {
+        "title": {
+          "uk": "Automation & AI Integration",
+          "en": "Automation & AI Integration"
+        },
+        "text": {
+          "uk": "Боти, скрипти, інтеграції API, локальні моделі.",
+          "en": "Bots, scripts, API integrations, local models."
+        },
+        "tech": [
+          "Telegram bots",
+          "n8n",
+          "Ollama",
+          "Scripts"
+        ]
+      }
+    ],
+    "adjacent": [
+      {
+        "uk": "Frontend Development — інтерфейси, адаптивність, анімації, UX.",
+        "en": "Frontend Development — interfaces, responsiveness, animation, UX."
+      },
+      {
+        "uk": "Database Engineering — структура даних, запити, індекси, бекапи.",
+        "en": "Database Engineering — data structures, queries, indexes, backups."
+      },
+      {
+        "uk": "Self-Hosting & Server Administration — власні сервіси, доступи, домени, TLS.",
+        "en": "Self-Hosting & Server Administration — own services, access, domains, TLS."
+      },
+      {
+        "uk": "AI-Assisted Development — локальні моделі та інтеграція ШІ у власні інструменти.",
+        "en": "AI-Assisted Development — local models and AI integration into my own tools."
+      }
+    ],
+    "experience": [
+      {
+        "title": {
+          "uk": "Omega Web Workshop",
+          "en": "Omega Web Workshop"
+        },
+        "text": {
+          "uk": "Кастомні сайти та серверні REST API під замовлення.",
+          "en": "Custom websites and backend REST APIs for clients."
+        }
+      },
+      {
+        "title": {
+          "uk": "Self-Hosted Cloud",
+          "en": "Self-Hosted Cloud"
+        },
+        "text": {
+          "uk": "Приватна хмара на Nextcloud: зберігання, доступи, бекапи, TLS.",
+          "en": "Private Nextcloud cloud: storage, access, backups, TLS."
+        }
+      },
+      {
+        "title": {
+          "uk": "OmegaSMP",
+          "en": "OmegaSMP"
+        },
+        "text": {
+          "uk": "Публічна Minecraft-мережа: проксі, бекенди, плагіни, експлуатація.",
+          "en": "A public Minecraft network: proxy, backends, plugins, operations."
+        }
+      }
+    ]
+  },
+  "contacts": [
     {
       "id": "github",
       "label": "GitHub",
       "url": "https://github.com/ItOmegaDev",
-      "handle": "@ItOmegaDev"
+      "handle": "github.com/ItOmegaDev",
+      "note": {
+        "uk": "код і проєкти",
+        "en": "code and projects"
+      }
     },
     {
       "id": "telegram",
       "label": "Telegram",
       "url": "https://t.me/ItOmega",
-      "handle": "@ItOmega"
+      "handle": "@ItOmega",
+      "note": {
+        "uk": "особисті повідомлення",
+        "en": "direct messages"
+      }
     },
     {
       "id": "fiverr",
       "label": "Fiverr",
       "url": "https://www.fiverr.com/s/d0pRVwa",
-      "handle": "Order a gig"
-    }
-  ],
-  "services": [
-    {
-      "id": "backend",
-      "label": { "uk": "Backend", "en": "Backend" },
-      "title": {
-        "uk": "REST API та бізнес-логіка",
-        "en": "REST API and business logic"
-      },
-      "description": {
-        "uk": "Проєктую ендпоінти, валідацію та роботу з MongoDB. JWT-аутентифікація, ролі, захист маршрутів.",
-        "en": "Endpoint design, validation and MongoDB data access. JWT authentication, roles, guarded routes."
-      },
-      "stack": ["Node.js", "Express", "MongoDB", "JWT"]
-    },
-    {
-      "id": "fullstack",
-      "label": { "uk": "Full Stack", "en": "Full Stack" },
-      "title": {
-        "uk": "Веб-додатки на MERN",
-        "en": "MERN web applications"
-      },
-      "description": {
-        "uk": "React і Next.js на клієнті, Express на сервері. Від макета до робочого деплою.",
-        "en": "React and Next.js on the client, Express on the server. From layout to a working deploy."
-      },
-      "stack": ["React", "Next.js", "TypeScript", "Vite"]
-    },
-    {
-      "id": "ops",
-      "label": { "uk": "Сервери", "en": "Servers" },
-      "title": {
-        "uk": "Linux та деплой",
-        "en": "Linux and deployment"
-      },
-      "description": {
-        "uk": "Налаштовую сервери, Docker-контейнери, Nginx і reverse proxy з TLS. Тримаю Nextcloud у себе.",
-        "en": "Server setup, Docker containers, Nginx and TLS reverse proxies. I self-host Nextcloud."
-      },
-      "stack": ["Linux", "Docker", "Nginx", "Caddy"]
-    },
-    {
-      "id": "automation",
-      "label": { "uk": "Скрипти", "en": "Scripts" },
-      "title": {
-        "uk": "Парсинг та автоматизація",
-        "en": "Scraping and automation"
-      },
-      "description": {
-        "uk": "Збір, фільтрація й обробка даних. Скрипти, які замінюють рутину на розклад.",
-        "en": "Data collection, filtering and processing. Scripts that replace manual routine."
-      },
-      "stack": ["Python", "Node.js", "Cron", "Bash"]
-    }
-  ],
-  "experience": [
-    {
-      "id": "workshop",
-      "title": { "uk": "Omega Web Workshop", "en": "Omega Web Workshop" },
-      "subtitle": {
-        "uk": "Розробка під замовлення",
-        "en": "Custom development"
-      },
-      "description": {
-        "uk": "Кастомні сайти та серверні REST API для клієнтів: від узгодження вимог до продакшен-деплою.",
-        "en": "Custom websites and backend REST APIs for clients, from requirements to production deploy."
+      "handle": "fiverr.com/s/d0pRVwa",
+      "note": {
+        "uk": "замовити послугу",
+        "en": "order a service"
       }
     },
     {
-      "id": "cloud",
-      "title": { "uk": "Self-Hosted Cloud", "en": "Self-Hosted Cloud" },
-      "subtitle": {
-        "uk": "Приватна інфраструктура",
-        "en": "Private infrastructure"
-      },
-      "description": {
-        "uk": "Розгорнув і обслуговую власний Nextcloud на Linux: зберігання, доступ, бекапи, TLS.",
-        "en": "Deployed and maintain a private Nextcloud on Linux: storage, access, backups, TLS."
-      }
-    },
-    {
-      "id": "jas",
-      "title": { "uk": "Автоматизація (JAS)", "en": "Automation (JAS)" },
-      "subtitle": {
-        "uk": "Дані та скрипти",
-        "en": "Data and scripts"
-      },
-      "description": {
-        "uk": "Скрипти збору та фільтрації даних для регулярних задач замість ручної роботи.",
-        "en": "Data collection and filtering scripts that handle recurring tasks instead of manual work."
+      "id": "channel",
+      "label": "Telegram channel",
+      "url": "https://t.me/DevOmegaTgk",
+      "handle": "@DevOmegaTgk",
+      "note": {
+        "uk": "нотатки й оновлення",
+        "en": "notes and updates"
       }
     }
   ],
-  "stack": [
-    { "group": "Backend", "items": ["Node.js", "Express", "MongoDB", "Mongoose", "JWT", "REST"] },
-    { "group": "Frontend", "items": ["React", "Next.js", "TypeScript", "Vite", "HTML/CSS"] },
-    { "group": "Ops", "items": ["Linux", "Docker", "Nginx", "Caddy", "Bash", "Git"] }
-  ]
+  "community": {
+    "title": {
+      "uk": "Omega Chat",
+      "en": "Omega Chat"
+    },
+    "text": {
+      "uk": "Спільнота для обговорень, підтримки та нетворкінгу навколо розробки й серверів.",
+      "en": "A community for discussion, support and networking around development and servers."
+    }
+  }
 }

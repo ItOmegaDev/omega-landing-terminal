@@ -56,13 +56,27 @@ export function isConnected() {
   return connected && mongoose.connection.readyState === 1;
 }
 
+/**
+ * Seeds (or refreshes) the profile document.
+ *
+ * The stored copy is replaced whenever its `version` differs from the bundled
+ * file, so editing api/data/profile.json and redeploying actually publishes the
+ * new content instead of silently keeping the old document.
+ */
 export async function seedProfile(document) {
   if (!isConnected()) return false;
+
+  const current = await Profile.findById('profile').lean();
+  if (current?.document?.version === document.version) {
+    return false;
+  }
+
   await Profile.updateOne(
     { _id: 'profile' },
-    { $setOnInsert: { document } },
+    { $set: { document } },
     { upsert: true },
   );
+  console.log(`[db] profile replaced with version ${document.version}`);
   return true;
 }
 

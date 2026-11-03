@@ -1,51 +1,74 @@
 import type { Profile } from './types';
 
 /**
- * Minimal offline copy of the profile. Used only when /api/profile is
- * unreachable, so the page still introduces Omega instead of a blank screen.
+ * Offline fallback. The API is the source of truth; this keeps the cover page
+ * readable (name, role, contacts) if /api/profile cannot be reached.
  */
 export const FALLBACK_PROFILE: Profile = {
-  name: 'Omega',
+  brand: 'Omega',
   handle: 'ItOmegaDev',
-  role: {
-    uk: 'Junior MERN Stack / Backend Developer',
-    en: 'Junior MERN Stack / Backend Developer',
+  title: { uk: 'Software Engineer', en: 'Software Engineer' },
+  subtitle: {
+    uk: 'Full-Stack & Infrastructure',
+    en: 'Full-Stack & Infrastructure',
   },
-  tagline: {
-    uk: 'Пишу бекенд, який не падає, і фронтенд, який не соромно показати.',
-    en: 'I build backends that stay up and frontends you are not ashamed to ship.',
-  },
-  summary: {
-    uk: 'REST API, бізнес-логіка, JWT-аутентифікація та MongoDB. React, Next.js, Docker і Linux.',
-    en: 'REST APIs, business logic, JWT auth and MongoDB. React, Next.js, Docker and Linux.',
-  },
+  status: { uk: 'Відкритий до проєктів', en: 'Available for work' },
   location: { uk: 'Україна · віддалено', en: 'Ukraine · remote' },
-  availability: {
-    uk: 'Відкритий до нових проєктів',
-    en: 'Open to new projects',
+  intro: {
+    uk: 'Проєктую, розробляю та розгортаю вебзастосунки повного циклу.',
+    en: 'I design, build and deploy full-cycle web applications.',
   },
-  links: [
+  meta: {
+    uk: 'Junior за посадою, інженер за підходом.',
+    en: 'Junior by title, engineer by approach.',
+  },
+  focus: [],
+  projects: [],
+  stack: [],
+  services: [],
+  engagement: [],
+  about: {
+    paragraphs: [],
+    directions: [],
+    adjacent: [],
+    experience: [],
+  },
+  contacts: [
     {
       id: 'github',
       label: 'GitHub',
       url: 'https://github.com/ItOmegaDev',
-      handle: '@ItOmegaDev',
+      handle: 'github.com/ItOmegaDev',
+      note: { uk: 'код і проєкти', en: 'code and projects' },
     },
     {
       id: 'telegram',
       label: 'Telegram',
       url: 'https://t.me/ItOmega',
       handle: '@ItOmega',
+      note: { uk: 'особисті повідомлення', en: 'direct messages' },
     },
     {
       id: 'fiverr',
       label: 'Fiverr',
       url: 'https://www.fiverr.com/s/d0pRVwa',
-      handle: 'Order a gig',
+      handle: 'fiverr.com/s/d0pRVwa',
+      note: { uk: 'замовити послугу', en: 'order a service' },
+    },
+    {
+      id: 'channel',
+      label: 'Telegram channel',
+      url: 'https://t.me/DevOmegaTgk',
+      handle: '@DevOmegaTgk',
+      note: { uk: 'нотатки й оновлення', en: 'notes and updates' },
     },
   ],
-  services: [],
-  experience: [],
-  stack: [],
+  community: {
+    title: { uk: 'Omega Chat', en: 'Omega Chat' },
+    text: {
+      uk: 'Спільнота для обговорень і нетворкінгу.',
+      en: 'A community for discussion and networking.',
+    },
+  },
   views: null,
 };

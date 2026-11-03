@@ -13,28 +13,50 @@
 | Проксі | Caddy 2 (TLS Let's Encrypt, HSTS, CSP) |
 | Деплой | Docker Compose на Ubuntu 24.04 |
 
+## Структура сайту
+
+Односторінковий застосунок із hash-роутингом (без залежностей на роутер):
+
+| Маршрут | Що показує |
+|---|---|
+| `#/` | обкладинка: ім'я, роль, три напрямки, швидкі посилання |
+| `#/work` | горизонтальна галерея проєктів |
+| `#/work/<id>` | повноекранна картка проєкту (Esc — назад, ← → — гортати) |
+| `#/stack` | технології за групами |
+| `#/services` | прайс і модель співпраці |
+| `#/about` | напрямки, суміжні області, досвід |
+| `#/connect` | контакти та спільнота |
+
+Мова перемикається кнопкою UA/EN, вибір зберігається в `localStorage`.
+
 ## Як влаштовано
 
 ```
-web/                  React SPA (UA/EN перемикач, темна тема)
-  src/App.tsx         вся сторінка
-  src/styles.css      дизайн
-  public/avatar.jpg   аватар (локальний файл, без зовнішніх запитів)
+web/                     React SPA
+  src/App.tsx            роутер, сторінки, деталі проєкту
+  src/styles.css         дизайн-система (моно, чорний фон, акценти по секціях)
+  src/fallback.ts        офлайн-копія (ім'я, роль, контакти)
+  public/avatar.jpg       аватар локально, без зовнішніх запитів
 api/
-  src/server.js       Express: /api/profile, /api/health, роздача SPA
-  src/db.js           Mongoose-моделі, підключення, лічильник переглядів
-  data/profile.json   джерело правди; сідиться в Mongo при старті
-Dockerfile            multi-stage: build React → runtime Node
-docker-compose.yml    app + mongo, мережа web (для Caddy)
+  src/server.js          Express: /api/profile, /api/health, роздача SPA
+  src/db.js              Mongoose-моделі, підключення, версійний сід
+  data/profile.json      джерело правди для контенту
+Dockerfile               multi-stage: build React → runtime Node
+docker-compose.yml       app + mongo, мережа web (для Caddy)
 ```
 
 Особливості:
 
-- `/api/profile` віддає вміст із MongoDB. Якщо база недоступна — та сама
-  сторінка рендериться з `data/profile.json` + мінімальної копії у фронтенді,
-  тому 500 назовні не вилітає.
-- Лічильник переглядів (`stats.visits`) інкрементується один раз на IP за 6
-  годин, мапа в пам'яті обмежена 5000 записами.
+- `/api/profile` віддає документ із MongoDB. Якщо база недоступна — сторінка
+  рендериться з `data/profile.json` (мінімальна копія у фронтенді), 500 назовні
+  не вилітає.
+- Поки відповідь не прийшла, показується екран `initialising` — щоб ніколи не
+  показати «0 проєктів» через повільну мережу. Таймаут — 4 с, далі офлайн-режим.
+- **Версійний сід:** у `profile.json` є поле `version`. Якщо воно відрізняється
+  від збереженого в Mongo — документ перезаписується при старті. Змінив текст →
+  підняв `version` → задеплоїв.
+- Лічильник переглядів (`stats.visits`) інкрементується раз на IP за 6 годин,
+  мапа в пам'яті обмежена 5000 записами.
 - `/api/*` обмежено 90 запитами на хвилину з IP.
 
 ## Локальна розробка
@@ -88,10 +110,9 @@ ssh 0mega 'docker exec landing-db mongosh landing --quiet --eval "db.stats().ok"
 ssh 0mega 'docker exec landing-db mongodump --db landing --archive' > landing-$(date +%F).archive
 ```
 
-Оновлення контенту — правити `api/data/profile.json`, потім `rsync` + rebuild.
-Сід виконується через `$setOnInsert`, тому вже наявний документ у Mongo не
-перезаписується: для зміни тексту оновіть документ напряму або видаліть
-колекцію `profile` перед рестартом.
+Оновлення контенту: правиш `api/data/profile.json`, піднімаєш `version`,
+`rsync` + `docker compose up -d --build`. Документ у Mongo перезапишеться
+автоматично (див. «Версійний сід» вище).
 
 ## Безпека
 

@@ -2,26 +2,20 @@ export type Lang = 'uk' | 'en';
 
 export type Localized = Record<Lang, string>;
 
-export interface ProfileLink {
-  id: string;
-  label: string;
-  url: string;
-  handle: string;
-}
-
-export interface Service {
-  id: string;
+export interface Focus {
   label: Localized;
-  title: Localized;
-  description: Localized;
-  stack: string[];
+  text: Localized;
 }
 
-export interface ExperienceItem {
+export interface Project {
   id: string;
-  title: Localized;
-  subtitle: Localized;
-  description: Localized;
+  name: string;
+  category: Localized;
+  year: string;
+  status: Localized;
+  summary: Localized;
+  highlights: Localized[];
+  stack: string[];
 }
 
 export interface StackGroup {
@@ -29,17 +23,58 @@ export interface StackGroup {
   items: string[];
 }
 
-export interface Profile {
-  name: string;
+export interface Service {
+  id: string;
+  name: Localized;
+  description: Localized;
+  price: number;
+  monthly?: boolean;
+  term: Localized;
+}
+
+export interface Direction {
+  title: Localized;
+  text: Localized;
+  tech: string[];
+}
+
+export interface ExperienceItem {
+  title: Localized;
+  text: Localized;
+}
+
+export interface Contact {
+  id: string;
+  label: string;
+  url: string;
   handle: string;
-  role: Localized;
-  tagline: Localized;
-  summary: Localized;
+  note: Localized;
+}
+
+export interface Profile {
+  brand: string;
+  handle: string;
+  title: Localized;
+  subtitle: Localized;
+  status: Localized;
   location: Localized;
-  availability: Localized;
-  links: ProfileLink[];
-  services: Service[];
-  experience: ExperienceItem[];
+  intro: Localized;
+  meta: Localized;
+  focus: Focus[];
+  projects: Project[];
   stack: StackGroup[];
+  services: Service[];
+  engagement: Localized[];
+  about: {
+    paragraphs: Localized[];
+    directions: Direction[];
+    adjacent: Localized[];
+    experience: ExperienceItem[];
+  };
+  contacts: Contact[];
+  community: {
+    title: Localized;
+    text: Localized;
+  };
   views: number | null;
 }

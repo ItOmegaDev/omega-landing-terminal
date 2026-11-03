@@ -6,3 +6,4 @@ web/.vite/
 .env.*
 !.env.example
 .DS_Store
+SECURITY-NOTES.local.md
