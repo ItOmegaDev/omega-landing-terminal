@@ -71,6 +71,7 @@ Caddy-блок лежить у `deploy/Caddyfile.snippet` і вже додани
 | Домен | Що віддає |
 |---|---|
 | `0mega.pp.ua` | цей лендінг (`landing:3000`) |
+| `0mega.pp.ua/<token>` | сумісність: старі публічні посилання на рахунки → `rahunoktest:4000` |
 | `r.0mega.pp.ua`, `omegasmp.pp.ua`, `k.ipit.ooo` | застосунок «Рахунки» (`rahunoktest:4000`) |
 
 ## Експлуатація

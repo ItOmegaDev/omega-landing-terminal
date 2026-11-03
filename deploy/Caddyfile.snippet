@@ -1,12 +1,21 @@
-# Додається в ~/apps/caddy/Caddyfile на сервері 0mega (VPS).
-# Лендінг живе на 0mega.pp.ua; застосунок «Рахунки» — на r.0mega.pp.ua.
-# Після зміни: docker exec caddy caddy reload --config /etc/caddy/Caddyfile
-
+# Особиста візитка (MERN: React + Express + MongoDB)
 0mega.pp.ua {
 	encode zstd gzip
 
-	reverse_proxy landing:3000 {
-		header_up X-Real-IP {remote_host}
+	# Сумісність: старі публічні посилання на рахунки мали вигляд
+	# https://0mega.pp.ua/<token>. Проксіюємо лише одиночний base64url-сегмент
+	# (12/22/43 символи — формати токенів rahunoktest), решта йде на лендінг.
+	@legacyInvoice path_regexp legacy ^/[A-Za-z0-9_-]{12,43}$
+	handle @legacyInvoice {
+		reverse_proxy rahunoktest:4000 {
+			header_up X-Real-IP {remote_host}
+		}
+	}
+
+	handle {
+		reverse_proxy landing:3000 {
+			header_up X-Real-IP {remote_host}
+		}
 	}
 
 	header {
@@ -16,6 +25,27 @@
 		X-Frame-Options "DENY"
 		Permissions-Policy "geolocation=(), microphone=(), camera=()"
 		Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
+		-Server
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}
+
+# Рахунки — застосунок rahunoktest (переїхав з 0mega.pp.ua)
+r.0mega.pp.ua, omegasmp.pp.ua, k.ipit.ooo {
+	encode zstd gzip
+
+	reverse_proxy rahunoktest:4000 {
+		header_up X-Real-IP {remote_host}
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
 		-Server
 	}
 
