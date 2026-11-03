@@ -49,6 +49,7 @@ services:
       - internal
     volumes:
       - db_data:/data/db
+      - db_config:/data/configdb
     security_opt:
       - no-new-privileges:true
     healthcheck:
@@ -73,3 +74,4 @@ networks:
 
 volumes:
   db_data:
+  db_config:
